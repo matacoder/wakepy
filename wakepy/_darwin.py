@@ -1,4 +1,8 @@
 from subprocess import Popen, PIPE
+from time import sleep
+
+import pyautogui
+from loguru import logger
 
 COMMAND = u"caffeinate"
 ARGS = [
@@ -25,6 +29,14 @@ def set_keepawake(keep_screen_awake=False):
     if keep_screen_awake:
         global _process
         _process = Popen([COMMAND], stdin=PIPE, stdout=PIPE)
+        try:
+            while True:
+                pyautogui.press('shift')
+                logger.debug("Pressed shift.")
+                sleep(300)
+        except KeyboardInterrupt:
+            pass
+
     else:
         _process = Popen([COMMAND] + ARGS, stdin=PIPE, stdout=PIPE)
 
